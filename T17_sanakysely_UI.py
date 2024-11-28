@@ -1,7 +1,8 @@
 # pip install PySide6
 import sys
+import json
 from Sanakysely import Sanakysely
-from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit, QFileDialog
 
 class Kyselyikkuna(QMainWindow):
     def __init__(self):
@@ -36,6 +37,11 @@ class Kyselyikkuna(QMainWindow):
         self.painike.setGeometry(20,100,330,30)
         self.painike.clicked.connect(self.aloita_alusta)
 
+        menupalkki = self.menuBar() # haetaan ikkunalta menu
+        tiedostomenu = menupalkki.addMenu("&Tiedosto")
+        avaa = tiedostomenu.addAction("&Avaa")
+        avaa.triggered.connect(self.menu_avaa)
+
     def tarkista_sana(self):
         vastaus = self.t2.text()
         self.kysely.tarkista(vastaus)
@@ -53,6 +59,13 @@ class Kyselyikkuna(QMainWindow):
         self.e1.setText(f"Oikeat: {self.kysely.oikeat}")
         self.e2.setText(f"Väärät: {self.kysely.vaarat}")
         self.e3.setText(f"Sana: {self.kysely.sananro}")
+
+    def menu_avaa(self):
+        tiedosto = QFileDialog.getOpenFileName(self, "Avaa sanasto")
+        with open(tiedosto[0], "r") as t:
+            tiedoston_sisalto = t.read()
+            self.kysely.sanasto = json.loads(tiedoston_sisalto)
+            self.aloita_alusta()
         
 
 
