@@ -13,7 +13,7 @@ class Kyselyikkuna(QMainWindow):
         
 
     def alusta_UI(self):
-        self.setWindowTitle("Sanakysely")
+        self.setWindowTitle(f"Sanakysely {self.kysely.avain}")
 
         self.e1 = QLabel("Oikeat: 0", self)
         self.e1.setGeometry(20,20,80,30)
@@ -54,6 +54,7 @@ class Kyselyikkuna(QMainWindow):
         self.kysely.nollaa()
         self.t1.setText(self.kysely.seuraavaSana())
         self.paivita_tiedot()
+        self.setWindowTitle(f"Sanakysely {self.kysely.avain}")
 
     def paivita_tiedot(self):
         self.e1.setText(f"Oikeat: {self.kysely.oikeat}")
